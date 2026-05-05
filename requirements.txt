@@ -1,0 +1,9 @@
+# UI and Styling
+ttkbootstrap==1.10.1
+
+# Reporting and PDF Generation
+reportlab==4.0.9
+
+# Linting and PEP 8 Compliance (Mandatory for Grading)
+flake8==7.0.0
+flake8-html==0.4.3

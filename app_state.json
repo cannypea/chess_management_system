@@ -1,0 +1,20 @@
+{
+  "clubs": [
+    {
+      "id": "25974a17-ef7f-43af-a629-67ee7824d894",
+      "name": "Castle Chess"
+    },
+    {
+      "id": "5e6094c6-a504-403e-8024-9d5152ca793b",
+      "name": "AUTO"
+    }
+  ],
+  "active_club": "5e6094c6-a504-403e-8024-9d5152ca793b",
+  "tournament": {
+    "id": "22033724-d5f4-4dac-be18-2154a0561a4c",
+    "name": "ddddd",
+    "players": [],
+    "rounds": [],
+    "completed": false
+  }
+}

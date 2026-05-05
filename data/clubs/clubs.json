@@ -1,0 +1,69 @@
+[
+    {
+        "id": null,
+        "name": "Castle Chess Default",
+        "players": [
+            {
+                "id": "37dd518a-cf17-49a4-8c2a-c027e034bf62",
+                "name": "royal mbah",
+                "email": "royal mbah@chess.com",
+                "chess_id": "rm22222",
+                "birthdate": "1990-01-01",
+                "rating": 1186.6880327718177,
+                "score": 3.5,
+                "opponents": [
+                    "jm33333",
+                    "pm55555",
+                    "nm44444"
+                ]
+            },
+            {
+                "id": "c82038b7-1155-4934-aad4-5b62dd9fb734",
+                "name": "jane mbah",
+                "email": "jane mbah@chess.com",
+                "chess_id": "jm33333",
+                "birthdate": "1990-01-01",
+                "rating": 1168.2447985619817,
+                "score": 3.0,
+                "opponents": [
+                    "rm22222",
+                    "nm44444",
+                    "pm55555"
+                ]
+            },
+            {
+                "id": "ce1ff2f1-a03d-4ac6-8c07-a259039e2d09",
+                "name": "noble mbah",
+                "email": "noble mbah@chess.com",
+                "chess_id": "nm44444",
+                "birthdate": "1990-01-01",
+                "rating": 1270.5369549874572,
+                "score": 6.5,
+                "opponents": [
+                    "jm33333",
+                    "pm55555",
+                    "rm22222"
+                ]
+            },
+            {
+                "id": "a17662e0-1c1e-4f86-9ace-d208f59a901a",
+                "name": "princewill mbah",
+                "email": "princewill mbah@chess.com",
+                "chess_id": "pm55555",
+                "birthdate": "1990-01-01",
+                "rating": 1174.5302136787434,
+                "score": 3.0,
+                "opponents": [
+                    "jm33333",
+                    "rm22222",
+                    "nm44444"
+                ]
+            }
+        ]
+    },
+    {
+        "id": null,
+        "name": "liverpool chess club",
+        "players": []
+    }
+]

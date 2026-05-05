@@ -1,0 +1,138 @@
+{
+    "id": "0e6d1048-1834-4d70-a909-174d9d238e92",
+    "name": "Auto-Sim",
+    "venue": "Virtual Venue",
+    "start_date": "2026-05-01",
+    "end_date": "2026-05-02",
+    "total_rounds": 4,
+    "current_round": 1,
+    "completed": false,
+    "players": [
+        {
+            "id": "37dd518a-cf17-49a4-8c2a-c027e034bf62",
+            "name": "royal mbah",
+            "email": "royal mbah@chess.com",
+            "chess_id": "rm22222",
+            "birthdate": "1990-01-01",
+            "rating": 1156.6557904315396,
+            "score": 10.0,
+            "opponents": [
+                "pm55555",
+                "nm44444",
+                "jm33333"
+            ]
+        },
+        {
+            "id": "c82038b7-1155-4934-aad4-5b62dd9fb734",
+            "name": "jane mbah",
+            "email": "jane mbah@chess.com",
+            "chess_id": "jm33333",
+            "birthdate": "1990-01-01",
+            "rating": 1193.7679258773,
+            "score": 11.5,
+            "opponents": [
+                "rm22222",
+                "nm44444",
+                "pm55555"
+            ]
+        },
+        {
+            "id": "ce1ff2f1-a03d-4ac6-8c07-a259039e2d09",
+            "name": "noble mbah",
+            "email": "noble mbah@chess.com",
+            "chess_id": "nm44444",
+            "birthdate": "1990-01-01",
+            "rating": 1230.8182354224894,
+            "score": 14.5,
+            "opponents": [
+                "pm55555",
+                "rm22222",
+                "jm33333"
+            ]
+        },
+        {
+            "id": "a17662e0-1c1e-4f86-9ace-d208f59a901a",
+            "name": "princewill mbah",
+            "email": "princewill mbah@chess.com",
+            "chess_id": "pm55555",
+            "birthdate": "1990-01-01",
+            "rating": 1218.758048268671,
+            "score": 12.0,
+            "opponents": [
+                "rm22222",
+                "nm44444",
+                "jm33333"
+            ]
+        }
+    ],
+    "rounds": [
+        {
+            "name": "Round 1",
+            "matches": [
+                {
+                    "p1_id": "nm44444",
+                    "p2_id": "rm22222",
+                    "s1": 1,
+                    "s2": 0
+                },
+                {
+                    "p1_id": "pm55555",
+                    "p2_id": "jm33333",
+                    "s1": 0,
+                    "s2": 1
+                }
+            ]
+        },
+        {
+            "name": "Round 2",
+            "matches": [
+                {
+                    "p1_id": "nm44444",
+                    "p2_id": "pm55555",
+                    "s1": 0.5,
+                    "s2": 0.5
+                },
+                {
+                    "p1_id": "jm33333",
+                    "p2_id": "rm22222",
+                    "s1": 0.5,
+                    "s2": 0.5
+                }
+            ]
+        },
+        {
+            "name": "Round 3",
+            "matches": [
+                {
+                    "p1_id": "nm44444",
+                    "p2_id": "pm55555",
+                    "s1": 0,
+                    "s2": 1
+                },
+                {
+                    "p1_id": "jm33333",
+                    "p2_id": "rm22222",
+                    "s1": 0.5,
+                    "s2": 0.5
+                }
+            ]
+        },
+        {
+            "name": "Round 4",
+            "matches": [
+                {
+                    "p1_id": "nm44444",
+                    "p2_id": "pm55555",
+                    "s1": 1,
+                    "s2": 0
+                },
+                {
+                    "p1_id": "jm33333",
+                    "p2_id": "rm22222",
+                    "s1": 1,
+                    "s2": 0
+                }
+            ]
+        }
+    ]
+}

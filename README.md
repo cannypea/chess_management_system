@@ -225,14 +225,14 @@ The project uses an object-oriented architecture with clear separation of concer
 * `report.py` → PDF report generation
 * `ui.py` → User interface
 
----
 
 # License
 
-This project is intended for educational and freelance portfolio purposes.
+This project is intended for educational purposes. An Openclassroom Project
 
 ---
 
 # Author
+Princewil Mbah
 
 Developed as an offline chess tournament management solution for Castle Chess Club.

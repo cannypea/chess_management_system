@@ -134,6 +134,7 @@ class App:
         self.btn(actions, "Next Round (Manual)", "info", self.next_round)
         self.btn(actions, "Simulate Tournament", "warning", self.run_simulation)
         self.btn(actions, "Run Diagnostic", "secondary", self.run_smoke_test)
+        self.btn(actions, "Reset Tournament", "danger", self.reset_tournament)
         
         tb.Separator(actions, bootstyle="secondary").pack(fill="x", pady=20)
         
@@ -267,6 +268,31 @@ class App:
         self.tournament = self.service.create_tournament("New Event", "Main Hall", "2026-05-04", "2026-05-05")
         self.tournament.players = self.active_club.players[:]
         self.refresh_ui()
+
+    def reset_tournament(self):
+        """Reset the current tournament state while preserving player base data (ratings kept).
+        Clears rounds, resets scores and opponents, and marks tournament not completed.
+        """
+        if not self.tournament:
+            messagebox.showinfo("No Tournament", "There is no active tournament to reset.")
+            return
+
+        if not messagebox.askyesno("Confirm Reset", "Reset the current tournament? This will clear rounds and scores."):
+            return
+
+        # Reset player scores and opponent history, keep ratings intact
+        for p in self.tournament.players:
+            p.score = 0.0
+            p.opponents = set()
+
+        # Clear rounds and reset metadata
+        self.tournament.rounds = []
+        self.tournament.current_round = 1
+        self.tournament.completed = False
+
+        # Refresh UI to reflect reset state
+        self.refresh_ui()
+        messagebox.showinfo("Tournament Reset", "Tournament state has been reset.")
 
     # GOLD STANDARD UPGRADE: Manual Result Entry Dialog
     def next_round(self):

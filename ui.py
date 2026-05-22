@@ -326,16 +326,70 @@ class App:
         self.ratings_win.protocol("WM_DELETE_WINDOW", on_close)
 
     def reset_ratings(self):
-        """Reset all players' ratings to the default baseline (1200)."""
-        if not messagebox.askyesno("Confirm Reset Ratings", "Reset all player ratings to 1200? This cannot be undone."):
+        """Safely reset all players' ratings to the default baseline (1200).
+
+        Policy: ratings must never be silently reset. This method requires a typed
+        confirmation, creates a JSON backup of current ratings, and logs the action.
+        """
+        players = self.tournament.players if self.tournament else self.active_club.players
+        if not players:
+            messagebox.showinfo("No Players", "No players available to reset ratings for.")
             return
 
-        players = self.tournament.players if self.tournament else self.active_club.players
+        # Create backup directory
+        backup_dir = os.path.join("data", "backups")
+        os.makedirs(backup_dir, exist_ok=True)
+
+        # Prepare backup content
+        timestamp = datetime.now().strftime("%Y%m%dT%H%M%S")
+        backup_name = f"ratings_backup_{timestamp}.json"
+        backup_path = os.path.join(backup_dir, backup_name)
+
+        backup_data = {
+            "timestamp": timestamp,
+            "tournament": getattr(self.tournament, "name", None),
+            "players": [
+                {"chess_id": p.chess_id, "name": p.name, "rating": p.rating}
+                for p in players
+            ]
+        }
+
+        try:
+            import json
+            with open(backup_path, "w", encoding="utf-8") as bf:
+                json.dump(backup_data, bf, indent=2)
+        except Exception as e:
+            messagebox.showerror("Backup Error", f"Failed to create ratings backup: {e}")
+            return
+
+        # Require explicit typed confirmation to avoid accidental resets
+        prompt = (
+            "Type RESET RATINGS to confirm resetting all player ratings to 1200:\n\n"
+            "(A backup has been saved to data/backups/{} )".format(backup_name)
+        )
+
+        confirmation = simpledialog.askstring("Confirm Ratings Reset", prompt)
+        if confirmation != "RESET RATINGS":
+            messagebox.showinfo("Cancelled", "Ratings reset cancelled. No changes made.")
+            return
+
+        # Perform reset
         for p in players:
             p.rating = 1200
 
+        # Log the reset action
+        try:
+            log_dir = os.path.join("data", "logs")
+            os.makedirs(log_dir, exist_ok=True)
+            log_path = os.path.join(log_dir, "ratings_reset.log")
+            with open(log_path, "a", encoding="utf-8") as lf:
+                lf.write(f"{datetime.now().isoformat()} - Ratings reset. Backup: {backup_name}\n")
+        except Exception:
+            # Non-fatal: continue even if logging fails
+            pass
+
         self.refresh_ui()
-        messagebox.showinfo("Ratings Reset", "All player ratings have been reset to 1200.")
+        messagebox.showinfo("Ratings Reset", f"All player ratings have been reset to 1200. Backup saved: {backup_name}")
 
     def reset_tournament(self):
         """Reset the current tournament state while preserving player base data (ratings kept).

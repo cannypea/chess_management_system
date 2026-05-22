@@ -7,3 +7,6 @@ reportlab==4.0.9
 # Linting and PEP 8 Compliance (Mandatory for Grading)
 flake8==7.0.0
 flake8-html==0.4.3
+
+# Testing
+pytest==7.4.0

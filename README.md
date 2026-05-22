@@ -107,6 +107,26 @@ pip install -r requirements.txt
 
 ---
 
+## Running Tests
+
+Unit tests are provided under the project root. You can run the verification test we added which exercises a full tournament flow.
+
+Using the project's virtual environment on Windows PowerShell:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+python -m unittest test_tournament_flow.py
+```
+
+If you prefer `pytest` (recommended for developer convenience), install the requirements and run:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+pytest -q
+```
+
+
 # Running the Application
 
 ```bash id="svf4w4"

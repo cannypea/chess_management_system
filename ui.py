@@ -131,6 +131,7 @@ class App:
         self.btn(actions, "New Tournament", "primary", self.new_tournament)
         self.btn(actions, "Register Player", "success", self.add_player)
         self.btn(actions, "Delete Player", "danger-outline", self.delete_player)
+        self.btn(actions, "Edit Score", "outline-info", self.edit_player_score)
         
         tb.Separator(actions, bootstyle="secondary").pack(fill="x", pady=20)
         
@@ -347,6 +348,32 @@ class App:
         # Refresh UI to reflect reset state
         self.refresh_ui()
         messagebox.showinfo("Tournament Reset", "Tournament state has been reset.")
+
+    def edit_player_score(self):
+        """Allow manual editing of a selected player's score."""
+        selected = self.tree.selection()
+        if not selected:
+            messagebox.showwarning("Selection", "Select a player from the table first.")
+            return
+
+        cid = self.tree.item(selected[0])['values'][0]
+        players = self.tournament.players if self.tournament else self.active_club.players
+        player = next((p for p in players if p.chess_id == cid), None)
+        if not player:
+            messagebox.showerror("Error", "Player not found.")
+            return
+
+        try:
+            new_score = simpledialog.askfloat("Edit Score", f"Enter new score for {player.name} (current {player.score}):", minvalue=0.0)
+        except Exception:
+            new_score = None
+
+        if new_score is None:
+            return
+
+        player.score = float(new_score)
+        self.refresh_ui()
+        messagebox.showinfo("Score Updated", f"{player.name} score updated to {player.score}")
 
     # GOLD STANDARD UPGRADE: Manual Result Entry Dialog
     def next_round(self):

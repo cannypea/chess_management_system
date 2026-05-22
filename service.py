@@ -58,4 +58,48 @@ class TournamentService:
 
             t.rounds.append(rnd)
 
+        # After rebuilding rounds/matches, recompute player scores and ratings
+        # from the match history to ensure the UI reflects ratings derived
+        # from game results (prevents stale or inconsistent rating values).
+        self._recompute_from_history(t)
+
         return t
+
+    def _recompute_from_history(self, tournament: Tournament, baseline_rating: int = 1200):
+        """Recompute player scores, opponents and Elo ratings from stored match history.
+
+        This resets each player's `score` and `opponents` and sets `rating` to
+        `baseline_rating` before replaying rounds in order and applying
+        `Match` results with `update_elo` to derive the current ratings.
+        """
+        # Defensive: ensure players exist
+        if not tournament.players:
+            return
+
+        # Reset players
+        for p in tournament.players:
+            p.score = 0.0
+            p.opponents = set()
+            p.rating = baseline_rating
+
+        # Replay rounds and matches in order
+        from rating import update_elo
+
+        for rnd in tournament.rounds:
+            for m in rnd.matches:
+                # Only apply matches that have explicit scores
+                if getattr(m, "s1", None) is None or getattr(m, "s2", None) is None:
+                    continue
+
+                # Ensure players are the tournament instances
+                p1 = next((pl for pl in tournament.players if pl.chess_id == m.p1.chess_id), m.p1)
+                p2 = next((pl for pl in tournament.players if pl.chess_id == m.p2.chess_id), m.p2)
+
+                # Apply scores and opponent history
+                p1.score += m.s1
+                p2.score += m.s2
+                p1.opponents.add(p2.chess_id)
+                p2.opponents.add(p1.chess_id)
+
+                # Update Elo based on this match result
+                update_elo(p1, p2, m.s1, m.s2)

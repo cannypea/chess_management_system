@@ -140,6 +140,7 @@ class App:
         self.btn(actions, "Run Diagnostic", "secondary", self.run_smoke_test)
         self.btn(actions, "Reset Tournament", "danger", self.reset_tournament)
         self.btn(actions, "Show Ratings", "outline-light", self.toggle_ratings)
+        self.btn(actions, "Reset Ratings", "outline-danger", self.reset_ratings)
         
         tb.Separator(actions, bootstyle="secondary").pack(fill="x", pady=20)
         
@@ -323,6 +324,18 @@ class App:
                 self.ratings_tree = None
 
         self.ratings_win.protocol("WM_DELETE_WINDOW", on_close)
+
+    def reset_ratings(self):
+        """Reset all players' ratings to the default baseline (1200)."""
+        if not messagebox.askyesno("Confirm Reset Ratings", "Reset all player ratings to 1200? This cannot be undone."):
+            return
+
+        players = self.tournament.players if self.tournament else self.active_club.players
+        for p in players:
+            p.rating = 1200
+
+        self.refresh_ui()
+        messagebox.showinfo("Ratings Reset", "All player ratings have been reset to 1200.")
 
     def reset_tournament(self):
         """Reset the current tournament state while preserving player base data (ratings kept).

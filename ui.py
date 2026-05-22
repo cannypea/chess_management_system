@@ -29,6 +29,9 @@ class App:
         self.clubs = []
         self.active_club = None
         self.tournament = None
+        # Ratings panel state
+        self.ratings_win = None
+        self.ratings_tree = None
         
         self.initialize_data()
         self.setup_ui()
@@ -135,6 +138,7 @@ class App:
         self.btn(actions, "Simulate Tournament", "warning", self.run_simulation)
         self.btn(actions, "Run Diagnostic", "secondary", self.run_smoke_test)
         self.btn(actions, "Reset Tournament", "danger", self.reset_tournament)
+        self.btn(actions, "Show Ratings", "outline-light", self.toggle_ratings)
         
         tb.Separator(actions, bootstyle="secondary").pack(fill="x", pady=20)
         
@@ -255,6 +259,18 @@ class App:
         for p in players_to_show:
             self.tree.insert("", "end", values=(p.chess_id, p.name, self.active_club.name, p.score, round(p.rating, 1)))
 
+        # Update ratings window if it's open
+        if self.ratings_win and self.ratings_tree:
+            try:
+                for it in self.ratings_tree.get_children():
+                    self.ratings_tree.delete(it)
+                for p in players_to_show:
+                    self.ratings_tree.insert("", "end", values=(p.chess_id, p.name, round(p.rating, 1)))
+            except Exception:
+                # If window was closed unexpectedly, clear references
+                self.ratings_win = None
+                self.ratings_tree = None
+
     def on_club_select(self, event):
         idx = self.club_listbox.curselection()
         if idx:
@@ -268,6 +284,44 @@ class App:
         self.tournament = self.service.create_tournament("New Event", "Main Hall", "2026-05-04", "2026-05-05")
         self.tournament.players = self.active_club.players[:]
         self.refresh_ui()
+
+    def toggle_ratings(self):
+        """Show or hide a small window that always displays current player ratings."""
+        # If already open, close it
+        if self.ratings_win and tk.Toplevel.winfo_exists(self.ratings_win):
+            try:
+                self.ratings_win.destroy()
+            finally:
+                self.ratings_win = None
+                self.ratings_tree = None
+            return
+
+        # Create ratings window
+        self.ratings_win = tk.Toplevel(self.root)
+        self.ratings_win.title("Player Ratings")
+        self.ratings_win.geometry("360x300")
+
+        cols = ("ID", "Name", "Rating")
+        self.ratings_tree = tb.Treeview(self.ratings_win, columns=cols, show="headings")
+        for col in cols:
+            self.ratings_tree.heading(col, text=col)
+            self.ratings_tree.column(col, anchor="center")
+        self.ratings_tree.pack(fill="both", expand=True, padx=8, pady=8)
+
+        # Populate
+        players_to_show = self.tournament.standings() if self.tournament else self.active_club.players
+        for p in players_to_show:
+            self.ratings_tree.insert("", "end", values=(p.chess_id, p.name, round(p.rating, 1)))
+
+        # Ensure window is destroyed cleanly
+        def on_close():
+            try:
+                self.ratings_win.destroy()
+            finally:
+                self.ratings_win = None
+                self.ratings_tree = None
+
+        self.ratings_win.protocol("WM_DELETE_WINDOW", on_close)
 
     def reset_tournament(self):
         """Reset the current tournament state while preserving player base data (ratings kept).
